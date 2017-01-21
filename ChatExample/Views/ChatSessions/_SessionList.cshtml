@@ -1,0 +1,27 @@
+﻿@using Codefirst_Models
+@model List<ChatSession>
+@{
+    int? SelectedElement = ViewBag.SelectedEelement;
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <select id="ChatSessionId" name="ChatSessionId" class="form-control">
+        <option value="-1">Please Select a Session</option>
+        @foreach (var session in Model)
+        {
+            if (session.Id == SelectedElement)
+            {
+                <option selected="selected" value="@session.Id">@session.StartedAt.ToShortDateString()</option>
+            }
+            else
+            {
+                <option value="@session.Id">@session.StartedAt.ToShortDateString()</option>
+            }
+        }
+    </select>
+}
+else
+{
+    <p>No Sessions Found</p>
+}

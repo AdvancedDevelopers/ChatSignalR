@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Codefirst_Models.Models" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Codefirst_Models.ChatSession">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Models.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Codefirst_Models.Message">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAIAAAAAAAABAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

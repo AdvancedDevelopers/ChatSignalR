@@ -1,0 +1,85 @@
+﻿@using Codefirst_Models;
+@model List<Message>
+@{
+    ViewBag.Title = "Welcome To Chat";
+    ViewBag.MetaDescription = "Hello it's a free product which developed by Advanced Developer.";
+    ViewBag.MetaKeywords = "Programming,Chat,SignalR,MVC,Course,Csharp,OOP,Asp.net,Web";
+}
+<h1>Chat Session</h1>
+@{
+    <div class="Messages">
+        @foreach (var message in Model)
+        {
+            <div class="row message">
+                <div class="col col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    @message.From
+                </div>
+                <div class="col col-md-9 col-lg-9 col-sm-12 col-xs-12">
+                    @message.Body   (@message.SentAt)
+                </div>
+            </div>
+        }
+    </div>
+}
+<div class="row">
+    <label class="col col-md-3 col-lg-3 col-sm-12 col-xs-12">Message:</label>
+    <input type="text" id="Message_Txt" placeholder="Message" class="form-control col col-md-6 col-lg-6 col-sm-12 col-xs-12" />
+    <input type="text" id="MyEmail_Txt" placeholder="Email" class="form-control col col-md-3 col-lg-3 col-sm-12 col-xs-12" />
+    <input type="button" onclick="SendMessage()" value="Send" class="btn btn-success" />
+</div>
+@section scripts {
+<script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+<script src="~/signalr/hubs"></script>
+}
+
+<script>
+    function SendMessage() {
+        var dataForm = {};
+        dataForm.Message = $('#Message_Txt').val();
+        dataForm.Email = $('#MyEmail_Txt').val();
+        dataForm.SessionId = '@ViewBag.SessionId';
+
+
+        var ajaxoptions = {};
+        ajaxoptions.url = "@Url.Action("PostNewMessage")";
+        ajaxoptions.data = { Email: dataForm.Email, Body: dataForm.Message, ChatSessionId: dataForm.SessionId };
+        ajaxoptions.success = function (result) {
+            if (result) {
+                PostAllSessions(dataForm, 'done');
+                //RenderNewMessage(dataForm.Email, dataForm.Message, 'done');
+            } else {
+                //RenderNewMessage(dataForm.Email, dataForm.Message, 'faild');
+                PostAllSessions(dataForm, 'faild');
+            }
+        }
+        $.ajax(ajaxoptions);
+    }
+    function RenderNewMessage(Email,Message, status) {
+        var StyleClass = 'Success';
+        if (status !== 'done') {
+            StyleClass = 'Faild';
+        }
+        var NewMessage = '<div class="row message ' + StyleClass + '">' +
+            '<div class="col col-md-3 col-lg-3 col-sm-12 col-xs-12">' +
+                Email +
+            '</div>' +
+            '<div class="col col-md-9 col-lg-9 col-sm-12 col-xs-12">' +
+                Message +
+            '</div>' +
+        '</div>';
+
+        $(NewMessage).css('display', 'none');
+        $('.Messages').append($(NewMessage).fadeIn(500));
+
+    }
+    function PostAllSessions(dataForm, status) {
+        var chat = $.connection.chatHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (email,message, status) {
+            RenderNewMessage(email, message, status);
+        };
+        $.connection.hub.start().done(function () {
+            chat.server.send(dataForm.Email,dataForm.Message,status);
+        });
+    }
+</script>
